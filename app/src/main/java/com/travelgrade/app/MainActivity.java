@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 
     Bitmap grade(Bitmap src,float amount,Preset p){
         int w=src.getWidth(),h=src.getHeight(),max=2600; float scale=Math.min(1f,max/(float)Math.max(w,h)); int W=Math.max(1,(int)(w*scale)),H=Math.max(1,(int)(h*scale)); Bitmap in=src; if(W!=w||H!=h)in=Bitmap.createScaledBitmap(src,W,H,true);
-        Bitmap out=Bitmap.createBitmap(W,H,Bitmap.Config.ARGB_8888); int[] px=new int[W*H]; in.getPixels(px,0,W,0,H); float a=Math.max(.15f,Math.min(1.5f,amount));
+        Bitmap out=Bitmap.createBitmap(W,H,Bitmap.Config.ARGB_8888); int[] px=new int[W*H]; in.getPixels(px,0,W,0,0,W,H); float a=Math.max(.15f,Math.min(1.5f,amount));
         for(int y=0;y<H;y++) for(int x=0;x<W;x++){
             int idx=y*W+x,c=px[idx]; float r=Color.red(c)/255f,g=Color.green(c)/255f,b=Color.blue(c)/255f; float lum=.2126f*r+.7152f*g+.0722f*b;
             float contrast=.07f, vib=.12f, warmth=0f, blue=0f, darkTop=.055f, vignette=.035f;
@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
             if(lum>.84f){ float q=(lum-.84f)/.16f*.055f*a; r-=q;g-=q;b-=q; }
             px[idx]=Color.rgb(clamp(r*255),clamp(g*255),clamp(b*255));
         }
-        out.setPixels(px,0,W,0,H); if(in!=src)in.recycle(); return out;
+        out.setPixels(px,0,W,0,0,W,H); if(in!=src)in.recycle(); return out;
     }
     int clamp(float v){return (int)Math.max(0,Math.min(255,v));}
 
